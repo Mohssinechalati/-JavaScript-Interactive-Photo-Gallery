@@ -98,8 +98,8 @@
     // Change background
     imageDiv.style.backgroundImage = "url('" + previewPic.src + "')";
 
-    // Change text to show the alt text
-    imageDiv.innerHTML = previewPic.alt;
+    // Display the alt text
+    imageDiv.textContent = previewPic.alt;
   }
 
   function unDo() {
