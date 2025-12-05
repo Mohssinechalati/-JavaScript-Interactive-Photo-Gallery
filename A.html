@@ -45,12 +45,12 @@
 <div id="image">Hover over an image below.</div>
 
 <div class="thumbs">
-  <img src="istockphoto-911133082-612x612.jpg" alt="Beautiful Beach with Golden Sand and Crystal Clear Waters" onmouseover="upDate(this)" onmouseout="unDo()">
-  <img src="istockphoto-989380624-1024x1024.jpg" alt="Majestic Mountain Peak Covered in Snow" onmouseover="upDate(this)" onmouseout="unDo()">
-  <img src="pngtree-sunset-images-free-download-free-landscape-wallpapers-image_2913889.jpg" alt="Vibrant Sunset Over City Skyline at Dusk" onmouseover="upDate(this)" onmouseout="unDo()">
-  <img src="istockphoto-911133082-612x612.jpg" alt="Tropical Paradise Beach with Coconut Palm Trees" onmouseover="upDate(this)" onmouseout="unDo()">
-  <img src="istockphoto-989380624-1024x1024.jpg" alt="Serene Mountain Landscape with Misty Valleys" onmouseover="upDate(this)" onmouseout="unDo()">
-  <img src="pngtree-sunset-images-free-download-free-landscape-wallpapers-image_2913889.jpg" alt="Stunning Evening Sky with Orange and Purple Hues" onmouseover="upDate(this)" onmouseout="unDo()">
+  <img src="istockphoto-911133082-612x612.jpg" alt="Beautiful Beach with Golden Sand and Crystal Clear Waters">
+  <img src="istockphoto-989380624-1024x1024.jpg" alt="Majestic Mountain Peak Covered in Snow">
+  <img src="pngtree-sunset-images-free-download-free-landscape-wallpapers-image_2913889.jpg" alt="Vibrant Sunset Over City Skyline at Dusk">
+  <img src="istockphoto-911133082-612x612.jpg" alt="Tropical Paradise Beach with Coconut Palm Trees">
+  <img src="istockphoto-989380624-1024x1024.jpg" alt="Serene Mountain Landscape with Misty Valleys">
+  <img src="pngtree-sunset-images-free-download-free-landscape-wallpapers-image_2913889.jpg" alt="Stunning Evening Sky with Orange and Purple Hues">
 </div>
 
 <script>
@@ -60,6 +60,36 @@
   window.addEventListener("load", function() {
     let imageDiv = document.getElementById("image");
     originalBackground = window.getComputedStyle(imageDiv).backgroundImage;
+    
+    // Automatically add tabindex to all thumbnail images
+    let thumbnails = document.querySelectorAll(".thumbs img");
+    thumbnails.forEach((img, index) => {
+      img.setAttribute("tabindex", index);
+      
+      // Add keyboard event listeners for accessibility
+      img.addEventListener("keypress", function(event) {
+        if (event.key === "Enter" || event.key === " ") {
+          upDate(this);
+          event.preventDefault();
+        }
+      });
+      
+      img.addEventListener("keydown", function(event) {
+        if (event.key === "Escape") {
+          unDo();
+          event.preventDefault();
+        }
+      });
+      
+      // Keep existing mouse events
+      img.addEventListener("mouseover", function() {
+        upDate(this);
+      });
+      
+      img.addEventListener("mouseout", function() {
+        unDo();
+      });
+    });
   });
 
   function upDate(previewPic) {
@@ -68,8 +98,8 @@
     // Change background
     imageDiv.style.backgroundImage = "url('" + previewPic.src + "')";
 
-    // Clear text when showing image
-    imageDiv.innerHTML = "";
+    // Change text to show the alt text
+    imageDiv.innerHTML = previewPic.alt;
   }
 
   function unDo() {
